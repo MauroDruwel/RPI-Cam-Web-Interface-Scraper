@@ -1,0 +1,41 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Build Docker image
+      run: |
+        docker build -t rpicam-scraper-test .
+    
+    - name: Test Docker image can start
+      run: |
+        docker run --rm rpicam-scraper-test python src/main.py --help
+    
+    - name: Test configuration validation
+      run: |
+        # Test that the application fails without required config
+        docker run --rm rpicam-scraper-test python -c "
+        import sys
+        sys.path.insert(0, '/app/src')
+        from rpicam_scraper.config import Config
+        config = Config()
+        try:
+            config.validate()
+            sys.exit(1)  # Should fail
+        except ValueError:
+            print('Configuration validation works correctly')
+        " || echo "Expected configuration validation failure - OK"

@@ -1,0 +1,48 @@
+# Docker Compose for RPI Camera Web Interface Scraper
+version: '3.8'
+
+services:
+  rpicam-scraper:
+    image: ghcr.io/maurodruwel/rpi-cam-web-interface-scraper:latest
+    container_name: rpicam-scraper
+    restart: unless-stopped
+    
+    # Environment variables
+    environment:
+      - RPICAM_BASE_URL=https://your-camera-server.com/path/
+      - YOUTUBE_CLIENT_SECRETS=/app/secrets/client_secrets.json
+      - YOUTUBE_TOKEN_PATH=/data/token.pickle
+      - RPICAM_DATA_DIR=/data/videos
+      
+      # Scheduling configuration
+      - RPICAM_ENABLE_SCHEDULER=true
+      - RPICAM_SCRAPE_INTERVAL_MINUTES=15
+      - RPICAM_DAILY_PROCESS_TIME=23:59
+      
+      # Processing configuration
+      - RPICAM_MAX_RETRIES=5
+      - RPICAM_REQUEST_TIMEOUT=30
+      - RPICAM_DOWNLOAD_TIMEOUT=60
+      
+      # YouTube configuration
+      - YOUTUBE_UPLOAD_TITLE_PREFIX=RPiCam
+      - YOUTUBE_PRIVACY_STATUS=unlisted
+      - YOUTUBE_UPLOAD_DESCRIPTION=Uploaded by RPI-Cam-Web-Interface-Scraper
+      - YOUTUBE_UPLOAD_TAGS=RPiCam,AutoUpload,Security
+    
+    # Volume mounts
+    volumes:
+      - ./data:/data:rw
+      - ./secrets:/app/secrets:ro
+    
+    # Default command runs the scheduler
+    # Override with: docker-compose run rpicam-scraper python src/main.py --mode scrape
+    
+    # Add labels for better container management
+    labels:
+      - "com.rpicam.service=scraper"
+      - "com.rpicam.version=1.0.0"
+
+volumes:
+  data:
+    driver: local

@@ -1,0 +1,18 @@
+# Production dependencies
+requests==2.31.0
+beautifulsoup4==4.12.2
+google-auth-oauthlib==1.0.0
+google-api-python-client==2.100.0
+google-auth-httplib2==0.1.1
+google-auth==2.23.0
+
+# Development dependencies (install with: pip install -r requirements-dev.txt)
+# pytest==7.4.0
+# pytest-cov==4.1.0
+# pytest-mock==3.11.1
+# flake8==6.0.0
+# black==23.7.0
+# isort==5.12.0
+# mypy==1.5.0
+# bandit==1.7.5
+# safety==2.3.5
