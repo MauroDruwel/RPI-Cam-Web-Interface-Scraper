@@ -32,8 +32,8 @@ services:
     
     # Volume mounts
     volumes:
-      - ./data:/data:rw
-      - ./secrets:/app/secrets:ro
+      - data:/data:rw
+      - secrets:/app/secrets:ro
     
     # Default command runs the scheduler
     # Override with: docker-compose run rpicam-scraper python src/main.py --mode scrape
@@ -45,4 +45,4 @@ services:
 
 volumes:
   data:
-    driver: local
+  secrets:
