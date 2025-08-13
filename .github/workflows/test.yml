@@ -27,7 +27,7 @@ jobs:
     
     - name: Run pytest tests
       run: |
-        docker run --rm rpicam-scraper-test /bin/bash -c "
+        docker run --rm --user root rpicam-scraper-test /bin/bash -c "
         pip install pytest pytest-cov pytest-mock &&
         python -m pytest tests/ -v
         "
