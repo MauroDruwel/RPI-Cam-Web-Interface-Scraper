@@ -25,6 +25,10 @@ jobs:
       run: |
         docker run --rm rpicam-scraper-test python src/main.py --help
     
+    - name: Run pytest tests
+      run: |
+        docker run --rm rpicam-scraper-test python -m pytest tests/ -v
+    
     - name: Test configuration validation
       run: |
         # Test that the application fails without required config
