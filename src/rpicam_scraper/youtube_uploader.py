@@ -39,7 +39,7 @@ class YouTubeUploader:
                     config.YOUTUBE_CLIENT_SECRETS, 
                     config.YOUTUBE_SCOPES
                 )
-                creds = flow.run_local_server(port=0)
+                creds = flow.run_console()
             
             # Save credentials for next run
             with open(config.YOUTUBE_TOKEN_PATH, "wb") as token:
